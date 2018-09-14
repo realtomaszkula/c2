@@ -1,19 +1,19 @@
 import { Component, OnDestroy } from '@angular/core';
-import { StopwatchState } from './stopwatch';
+import { StopwatchService } from './stopwatch.service';
 
 @Component({
   selector: 'app-stopwatch',
   template: `
   <app-layout>
-    <app-time [time]="time"></app-time>
-    <app-laps [laps]="laps"></app-laps>
+    <app-time [time]="stopwatch.getTime()"></app-time>
+    <app-laps [laps]="stopwatch.getLaps()"></app-laps>
     <app-action-buttons
-      [currentState]="state"
-      (start)="onStart()"
-      (stop)="onStop()"
-      (lap)="onLap()"
-      (resume)="onResume()"
-      (reset)="onReset()">
+      [currentState]="stopwatch.getState()"
+      (start)="stopwatch.start()"
+      (stop)="stopwatch.stop()"
+      (lap)="stopwatch.lap()"
+      (resume)="stopwatch.resume()"
+      (reset)="stopwatch.reset()">
     </app-action-buttons>
   </app-layout>
   `,
@@ -23,50 +23,13 @@ import { StopwatchState } from './stopwatch';
         display: block;
       }
     `
-  ]
+  ],
+  providers: [StopwatchService]
 })
 export class StopwatchComponent implements OnDestroy {
-  private intervalId: number | null = null;
-
-  state = StopwatchState.Off;
-  time = 0;
-  laps: number[] = [];
+  constructor(public stopwatch: StopwatchService) {}
 
   ngOnDestroy() {
-    this.clearTimerInterval();
-  }
-
-  onStart() {
-    this.state = StopwatchState.On;
-    this.setTimerInterval();
-  }
-
-  onResume() {
-    this.state = StopwatchState.On;
-    this.setTimerInterval();
-  }
-
-  onStop() {
-    this.state = StopwatchState.Paused;
-    this.clearTimerInterval();
-  }
-
-  onReset() {
-    this.state = StopwatchState.Off;
-    this.time = 0;
-    this.laps = [];
-  }
-
-  onLap() {
-    this.laps = [...this.laps, this.time];
-  }
-
-  private setTimerInterval() {
-    this.intervalId = window.setInterval(() => (this.time += 10), 100);
-  }
-
-  private clearTimerInterval() {
-    window.clearInterval(this.intervalId as number);
-    this.intervalId = null;
+    this.stopwatch.destroy();
   }
 }

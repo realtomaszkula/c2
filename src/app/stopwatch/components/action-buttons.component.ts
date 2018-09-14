@@ -5,7 +5,7 @@ import {
   Input,
   Output
 } from '@angular/core';
-import { StopwatchState } from '../stopwatch';
+import { StopwatchState } from '../stopwatch.service';
 
 @Component({
   selector: 'app-action-buttons',
