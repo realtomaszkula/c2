@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+
+html,
+body {
+  height: 100%;
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+.primary {
+  color: mat-color($mat-indigo, 400);
+}
+
+.accent {
+  color: mat-color($mat-pink, 400);
+}
